@@ -89,4 +89,14 @@ no warnings 'experimental::class';
     is(Testcase6->new->forwarded, "OK", 'forward-declared method works');
 }
 
+# lexical methods work
+{
+    class Testcase7 {
+        method $priv { return "OK" }
+        method public { return $self->$priv }
+    }
+
+    ok(!Testcase7->can('$priv'), 'lexical method is not public');
+    is(Testcase7->new->public, "OK", 'lexical method works');
+}
 done_testing;
